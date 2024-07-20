@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file .env src/index.js",
-    "watch": "node --env-file .env --watch src/index.js"
+    "start": "node src/index.js",
+    "watch": "node --watch src/index.js"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "description": "",
   "dependencies": {
     "@clack/prompts": "^0.7.0",

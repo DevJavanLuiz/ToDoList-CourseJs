@@ -26,10 +26,10 @@ export const taskManager = {
     tasks.set(task.name, task);
     this.save();
   },
-  coloStatus(status) {
+  colorStatus(status) {
     switch (status) {
       case "Em andamento": {
-        return chalk.bgHex("#5e4509")(` ${status} `);
+        return chalk.bgHex("#FFA500")(` ${status} `);
       }
       case "Concluída": {
         return chalk.bgHex("#84e67f")(` ${status} `);

@@ -1,14 +1,13 @@
 import { isCancel, log, select, text } from "@clack/prompts";
 import chalk from "chalk";
-
+import { mainMenu } from "./main.js";
 import { listTaskMenu } from "./list.js";
 import { taskManager } from "../manager/tasks.js";
 
 export async function updateTaskMenu(taskName) {
   const task = taskManager.tasks.get(taskName);
-
   const formatedDate = new Date(task.createdAt).toLocaleString();
-  const status = taskManager.coloStatus(task.name);
+  const status = taskManager.colorStatus(task.status);
 
   log.info(
     [
@@ -34,8 +33,12 @@ export async function updateTaskMenu(taskName) {
 
   switch (selected) {
     case "delete": {
-      taskManager.tasks.delete(taskManager);
+      taskManager.tasks.delete(taskName);
+      log.success(chalk.green("Mensagem deletada com sucesso!"));
       taskManager.save();
+      setTimeout(() => {
+        mainMenu();
+      }, 1000);
       return;
     }
 
@@ -45,8 +48,6 @@ export async function updateTaskMenu(taskName) {
     }
 
     case "name": {
-      const oldTaskName = task.name;
-
       const newTaskName = await text({
         message: "Digite o novo nome da tarefa",
         validate(input) {
@@ -55,16 +56,20 @@ export async function updateTaskMenu(taskName) {
           }
         },
       });
+
       if (isCancel(newTaskName)) {
         updateTaskMenu(oldTaskName);
         return;
       }
+      const oldTaskName = task.name;
 
       taskManager.tasks.delete(oldTaskName);
-      const updateTask = { ...task, name: newTaskName };
-      taskManager.tasks.set(newTaskName, updateTask);
+
+      const updatedTask = { ...task, name: newTaskName };
+      taskManager.tasks.set(newTaskName, updatedTask);
       taskManager.save();
       updateTaskMenu(newTaskName);
+      return
     }
     case "status": {
       const taskStatus = ["Em andamento", "Concluída", "Cancelada"];

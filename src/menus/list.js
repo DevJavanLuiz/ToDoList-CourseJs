@@ -15,7 +15,7 @@ export async function listTaskMenu() {
     message: "Selecione uma tarefa",
     options: [
       ...taskManager.toArray().map(({ name, status }) => ({
-        label: `${taskManager.coloStatus(status)} ${chalk.white.underline(
+        label: `${taskManager.colorStatus(status)} ${chalk.white.underline(
           name
         )}`,
         value: name,
